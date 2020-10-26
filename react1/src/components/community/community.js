@@ -7,7 +7,8 @@ const Community = () => {
   return (
     <Consumer>
       {
-        ({community}) => {
+        ({community, inputValue}) => {
+          if(inputValue) return <div>Search results for “{inputValue}”</div>
           return (
             <div className="community">
               <img src={DefaultIcon} alt="communityIcon"/>

@@ -8,9 +8,9 @@ const Header = () => {
   return (
     <Consumer>
       {
-        ({fetchSubreddits}) => {
+        ({setInputValue}) => {
           const changeInput = (e) => {
-            fetchSubreddits(e.target.value);
+            setInputValue(e.target.value);
           }
 
           return (

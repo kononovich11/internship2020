@@ -2,15 +2,16 @@ import React from 'react';
 import {Consumer} from '../context';
 import PostItem from '../postItem';
 import SubredditItem from '../subredditItem';
+import ErrorResult from '../errorResult';
 import './list.css';
 
 const List = () => {
   return (
     <Consumer>
       {
-        ({fetchData, subreddits}) => {
-          const renderArr = subreddits || fetchData;
-          if (renderArr.length === 0) return <div>No result</div>
+        ({posts, subreddits}) => {
+          const renderArr = subreddits || posts;
+          if (renderArr.length === 0) return <ErrorResult/>
           return (
             <div className="list">
               {

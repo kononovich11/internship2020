@@ -4,11 +4,54 @@ import {Provider} from 'components/context';
 import Header from 'components/header';
 import Community from 'components/community';
 import List from 'components/list';
+import Loader from 'components/loader';
 
 class Home extends React.Component {
 
+  setInputValue = (inputValue) => {
+    this.setState({inputValue: inputValue});
+  }
+
+  setPostUrl = (url) => {
+    this.setState({postUrl: url});
+  }
+
+  state = {
+    posts: null,
+    postUrl: null,
+    community: null,
+    subreddits: null,
+    inputValue: null,
+    setInputValue: this.setInputValue,
+    setPostUrl: this.setPostUrl,
+  }
+
+  componentDidMount() {
+    this.fetchPosts();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const {inputValue, postUrl} = this.state;
+    if(prevState.inputValue !== inputValue) {
+      this.fetchSubreddits(inputValue);
+    }
+    if(prevState.postUrl !== postUrl) {
+      this.fetchPosts(postUrl);
+    }
+  }
+
+  fetchPosts = async (subreddit = 'r/react') => {
+    const { fetchReddit } = this.props;
+    const redditData = await fetchReddit(`/${subreddit}/hot?limit=10`).then(res => res.json());
+    
+    const communityTitle = await fetchReddit(`/${subreddit}/about`).then(res => res.json());
+
+    const data = redditData.data.children;
+    const community = communityTitle.data;
+    this.setState({ posts: data, community: community, subreddits: null});
+  }
+
   fetchSubreddits = async (subreddit) => {
-    console.log(subreddit);
     if(subreddit === '') {
       this.setState({ subreddits: null });
     } else {
@@ -18,49 +61,20 @@ class Home extends React.Component {
     }
   }
 
-  getRedditData = async (subreddit = 'r/react') => {
-    const { fetchReddit } = this.props;
-    const redditData = await fetchReddit(`/${subreddit}/hot?limit=10`).then(res => res.json());
-    
-    const communityTitle = await fetchReddit(`/${subreddit}/about`).then(res => res.json());
-
-    const data = redditData.data.children;
-    const community = communityTitle.data;
-    this.setState({ fetchData: data, community: community, subreddits: null});
-  }
-
-  state = {
-    fetchData: null,
-    community: null,
-    subreddits: null,
-    fetchSubreddits: this.fetchSubreddits,
-    getRedditData: this.getRedditData,
-  }
-
-  componentDidMount() {
-    this.getRedditData();
-  }
-
   render() {
-    const {fetchData} = this.state;
-    console.log(this.state);
+    const {posts, community, subreddits} = this.state;
 
-    if (!fetchData) {
-      return (
-        <p>Loading...</p>
-      );
-    }
-    else {
-      return (
-        <section>
-         <Provider value={this.state}>
-          <Header/>
-          <Community/>
-          <List/>
-         </Provider>
-        </section>
-      );
-    }
+    if (!posts && !community && !subreddits) return <Loader/>;
+
+    return (
+      <section>
+        <Provider value={this.state}>
+        <Header/>
+        <Community/>
+        <List/>
+        </Provider>
+      </section>
+    );
   }
 }
 

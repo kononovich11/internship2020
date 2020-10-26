@@ -8,10 +8,10 @@ const SubredditItem = ({itemData}) => {
   return (
     <Consumer>
       {
-        ({getRedditData}) => {
+        ({setPostUrl}) => {
           const subredditHandler = (e) => {
            const redirectPost = e.target.children[1].children[0].innerText;
-           getRedditData(redirectPost);
+           setPostUrl(redirectPost);
           }
 
           return(
