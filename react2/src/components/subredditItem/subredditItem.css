@@ -1,0 +1,25 @@
+.subreddit {
+  width: 60vw;
+  background: #FFFFFF;
+  border: 1px solid #EFEFEF;
+  border-radius: 0.3em;
+  padding: 2em;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.subredditImg {
+  height: 7vh;
+  width: 7vw;
+  border-radius: 50%;
+}
+
+.subredditContent {
+  margin: 0 2em;
+}
+
+.subredditTitle {
+  font-weight: bold;
+  font-size: 2em;
+}
