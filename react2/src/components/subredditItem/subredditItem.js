@@ -3,7 +3,7 @@ import './subredditItem.css';
 import ContextApp from '../context';
 
 const SubredditItem = ({itemData}) => {
-  const {setPostUrl} = useContext(ContextApp);
+  const {setPostUrl, setInputValue} = useContext(ContextApp);
   const {display_name_prefixed, 
          subscribers, 
          public_description, 
@@ -13,6 +13,7 @@ const SubredditItem = ({itemData}) => {
   const subredditHandler = (e) => {
     const redirectPost = e.target.children[1].children[0].innerText;
     setPostUrl(redirectPost);
+    setInputValue(null);
   }
 
   return (

@@ -3,15 +3,18 @@ import ContextApp from '../context';
 import PostItem from '../postItem';
 import SubredditItem from '../subredditItem';
 import ErrorResult from '../errorResult';
+import {withRouter} from 'react-router-dom';
 import './list.css';
 
-const List = () => {
+const List = ({history}) => {
   const {posts, subreddits} = useContext(ContextApp);
   const renderArr = subreddits || posts;
 
-  if (renderArr.length === 0) return <ErrorResult/>
+  if (renderArr.length === 0) {
+    history.push('/error');
+  } 
 
-  return (     
+  return (  
     <div className="list">
       {
         renderArr.map((item, index)=> {
@@ -23,4 +26,4 @@ const List = () => {
   );
 }
 
-export default List;
+export default withRouter(List);

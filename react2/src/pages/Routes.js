@@ -13,7 +13,7 @@ function Routes() {
   if (isLoggedIn) {
     return (
       <Switch>
-        <Route path="/" exact component={Home} />
+        <Route path="/" render={() => <Home/>}/>
         <Redirect to="/" />
       </Switch>
     );
